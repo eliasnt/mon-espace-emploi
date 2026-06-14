@@ -235,16 +235,31 @@ def fetch_adzuna_fr() -> list:
         return []
 
     queries = [
-        'animateur éducateur BAFA jeunesse',
-        'assistant éducatif AESH accompagnant scolaire',
-        'assistant ressources humaines RH',
-        'chargé recrutement administration personnel',
-        'chargé clientèle téléconseiller accueil',
-        'réceptionniste hôtel hébergement',
-        'gouvernante femme chambre hôtel',
-        'débutant sans expérience formation assurée',
-        'conseiller commercial relation client',
-        'secrétaire administratif bureau',
+        # Éducation / jeunesse — jobs accessibles sans diplôme
+        'animateur périscolaire débutant BAFA',
+        'baby sitter garde enfant domicile débutant',
+        'assistant éducation AED surveillant lycée',
+        'AESH accompagnant élèves handicap débutant',
+        'animateur centre loisirs ALSH sans expérience',
+        # RH junior
+        'assistant RH junior débutant recrutement',
+        'chargé recrutement junior sans expérience',
+        # Relation client — postes très accessibles
+        'téléconseiller débutant formation assurée',
+        'hôtesse accueil standardiste débutant',
+        'conseiller clientèle débutant sans expérience',
+        'vendeur débutant sans expérience magasin',
+        'caissier hôte de caisse sans diplôme',
+        # Hôtellerie — postes sans diplôme requis
+        'réceptionniste hôtel débutant junior',
+        'femme de chambre valet équipier hôtel',
+        'serveur restauration débutant sans expérience',
+        'agent entretien hôtel ménage',
+        # Cross-secteur vraiment sans expérience
+        'job étudiant temps partiel Paris',
+        'aide à domicile auxiliaire vie débutant',
+        'emploi sans diplôme sans expérience',
+        'emploi saisonnier Île-de-France étudiant',
     ]
     results = []
     seen = set()
@@ -304,12 +319,16 @@ def fetch_jooble_fr() -> list:
         return []
 
     queries = [
-        ('animateur éducateur BAFA', 'Île-de-France'),
-        ('assistant RH recrutement', 'Paris'),
-        ('chargé clientèle téléconseiller', 'Île-de-France'),
-        ('réceptionniste hôtel', 'Paris'),
-        ('débutant sans expérience', 'Île-de-France'),
-        ('accompagnant scolaire AESH', 'Île-de-France'),
+        ('animateur périscolaire débutant BAFA', 'Île-de-France'),
+        ('baby sitter garde enfant débutant', 'Paris'),
+        ('téléconseiller débutant formation', 'Île-de-France'),
+        ('hôtesse accueil débutant', 'Paris'),
+        ('réceptionniste hôtel débutant junior', 'Paris'),
+        ('femme de chambre valet hôtel', 'Île-de-France'),
+        ('serveur restauration débutant', 'Paris'),
+        ('vendeur débutant sans expérience', 'Île-de-France'),
+        ('job étudiant temps partiel', 'Paris'),
+        ('aide à domicile auxiliaire débutant', 'Île-de-France'),
     ]
     results = []
     seen = set()
@@ -357,14 +376,18 @@ def fetch_jooble_fr() -> list:
 
 def fetch_indeed_rss_fr() -> list:
     queries = [
-        ('animateur+educateur+BAFA',          'Ile-de-France'),
-        ('assistant+RH+recrutement',           'Paris'),
-        ('chargé+clientèle+téléconseiller',    'Ile-de-France'),
-        ('réceptionniste+hôtel',               'Paris'),
-        ('débutant+sans+expérience',           'Ile-de-France'),
-        ('accompagnant+scolaire',              'Ile-de-France'),
-        ('animation+periscolaire',             'Ile-de-France'),
-        ('agent+accueil+hotellerie',           'Paris'),
+        ('animateur+periscolaire+debutant',          'Ile-de-France'),
+        ('baby+sitter+garde+enfant',                 'Paris'),
+        ('teleconseiller+debutant+formation',        'Ile-de-France'),
+        ('hotesse+accueil+debutant',                 'Paris'),
+        ('receptionniste+hotel+debutant',            'Paris'),
+        ('femme+chambre+equipier+hotel',             'Ile-de-France'),
+        ('serveur+restauration+debutant',            'Paris'),
+        ('vendeur+debutant+sans+experience',         'Ile-de-France'),
+        ('job+etudiant+temps+partiel',               'Paris'),
+        ('aide+domicile+auxiliaire+debutant',        'Ile-de-France'),
+        ('caissier+hotesse+caisse',                  'Paris'),
+        ('assistant+RH+junior+debutant',             'Ile-de-France'),
     ]
     results = []
     seen = set()
@@ -411,8 +434,10 @@ def fetch_indeed_rss_fr() -> list:
 def fetch_jobtome_fr() -> list:
     slug = 'paris'  # Jobtome utilise un slug de ville
     queries = [
-        'animateur', 'educateur', 'assistant-rh', 'conseiller-clientele',
-        'receptionniste', 'hotellerie', 'debutant', 'accueil',
+        'animateur-periscolaire', 'baby-sitter', 'garde-enfants',
+        'teleconseiller-debutant', 'hotesse-accueil', 'receptionniste-debutant',
+        'femme-chambre', 'serveur-debutant', 'vendeur-debutant',
+        'job-etudiant', 'aide-domicile', 'caissier',
     ]
     results = []
     seen = set()

@@ -544,11 +544,11 @@ const MOTIVATIONS = [
 ];
 
 const CAT_KW = {
-  edu: ['enseignant','éducateur','formateur','pédagogie','scolaire','école','lycée','collège','formation','enseignement','moniteur','professeur','instit','éducation','animateur','animation','BAFA','périscolaire','AESH','accompagnant','assistant éducatif','loisirs','jeunesse','enfant','crèche','maternelle'],
-  rh:  ['ressources humaines','RH','recrutement','recruteur','chargé RH','assistant RH','gestionnaire paie','administration personnel','chargé de formation','onboarding','talent','paie','rémunération','SIRH','ADP','secrétaire RH','coordinateur RH'],
-  client: ['clientèle','relation client','téléconseiller','chargé de clientèle','conseiller clientèle','conseiller commercial','support client','centre d\'appel','call center','hôte','hôtesse','accueil','réception','standard','front office','SAV','service client'],
-  hotel: ['réceptionniste','hôtel','hébergement','gouvernante','femme de chambre','valet','bagagiste','conciergerie','hôtellerie','restauration','room service','chambres','front desk','desk','auberge','résidence','apart-hôtel','back office hôtel'],
-  noxp: ['débutant','sans expérience','sans diplôme','formation assurée','pas d\'expérience','ouvert aux débutants','débutante','junior sans expérience','premier emploi','aucune expérience requise','accessible débutant'],
+  edu: ['animateur','animation','BAFA','périscolaire','AESH','accompagnant','assistant éducatif','AED','assistant éducation','surveillant','éducateur','jeunesse','enfant','baby-sitter','baby sitter','garde enfant','garde d\'enfant','crèche','maternelle','loisirs','ALSH','centre de loisirs','animateur loisirs'],
+  rh:  ['ressources humaines','RH','recrutement','recruteur','assistant RH','junior RH','chargé RH','administration personnel','chargé de formation','paie','secrétaire RH'],
+  client: ['clientèle','relation client','téléconseiller','conseiller clientèle','chargé de clientèle','support client','call center','hôtesse','hôte','accueil','réception','standard','service client','SAV','vendeur','vendeuse','vente','conseiller vente','caissier','caissière','hôte de caisse','conseiller commercial'],
+  hotel: ['réceptionniste','hôtel','hébergement','femme de chambre','valet de chambre','valet chambre','équipier hôtel','équipier','bagagiste','conciergerie','hôtellerie','restauration','serveur','serveuse','commis','plongeur','aide cuisine','agent entretien hôtel','chambre','ménage hôtel'],
+  noxp: ['débutant','sans expérience','sans diplôme','formation assurée','pas d\'expérience','ouvert aux débutants','junior sans expérience','premier emploi','job étudiant','emploi étudiant','job temps partiel','emploi saisonnier','profil débutant','accessible sans expérience','étudiant recherche'],
 };
 
 const CONTRACT_KW = {
@@ -689,25 +689,30 @@ async function fetchAdzunaFR(customQuery) {
 
   const loc = getUserLocation();
   const queries = customQuery ? [customQuery] : [
-    // Éducation
-    'animateur éducateur BAFA jeunesse',
-    'assistant éducatif AESH accompagnant scolaire',
-    'moniteur animation périscolaire loisirs',
-    'éducateur spécialisé formation enfant',
-    // RH
-    'assistant ressources humaines RH recrutement',
-    'chargé recrutement administration personnel paie',
-    'gestionnaire RH formation alternance',
-    // Relation client
-    'chargé clientèle conseiller client accueil',
-    'téléconseiller relation client service client',
-    'conseiller commercial hôte accueil',
-    // Hôtellerie
-    'réceptionniste hôtel hébergement front desk',
-    'agent accueil hôtellerie restauration conciergerie',
-    'gouvernante femme chambre hôtel',
-    // Sans expérience transversal
-    'débutant sans expérience formation assurée junior',
+    // Éducation / jeunesse sans diplôme
+    'animateur périscolaire débutant BAFA',
+    'baby sitter garde enfant domicile débutant',
+    'assistant éducation AED surveillant lycée',
+    'AESH accompagnant élèves débutant',
+    'animateur centre loisirs ALSH sans expérience',
+    // RH junior accessible
+    'assistant RH junior débutant recrutement',
+    'chargé recrutement junior sans expérience',
+    // Relation client sans expérience
+    'téléconseiller débutant formation assurée',
+    'hôtesse accueil standardiste débutant',
+    'conseiller clientèle débutant sans expérience',
+    'vendeur débutant sans expérience',
+    'caissier hôte de caisse sans diplôme',
+    // Hôtellerie sans diplôme requis
+    'réceptionniste hôtel débutant junior',
+    'femme de chambre valet équipier hôtel',
+    'serveur restauration débutant sans expérience',
+    'agent entretien ménage hôtel',
+    // Jobs étudiants / sans exp transversaux
+    'job étudiant temps partiel',
+    'aide à domicile auxiliaire débutant',
+    'emploi sans diplôme sans expérience',
   ];
 
   const pages = customQuery ? [1] : [1, 2];
@@ -742,11 +747,16 @@ async function fetchJoobleFR(customQuery) {
 
   const loc = getUserLocation();
   const queries = customQuery ? [{ keywords: customQuery, location: loc }] : [
-    { keywords: 'animateur éducateur BAFA', location: loc },
-    { keywords: 'assistant RH recrutement', location: loc },
-    { keywords: 'chargé clientèle téléconseiller', location: loc },
-    { keywords: 'réceptionniste hôtel hébergement', location: loc },
-    { keywords: 'débutant sans expérience formation', location: loc },
+    { keywords: 'baby sitter garde enfant débutant', location: loc },
+    { keywords: 'animateur périscolaire BAFA sans expérience', location: loc },
+    { keywords: 'assistant RH junior débutant', location: loc },
+    { keywords: 'téléconseiller débutant formation assurée', location: loc },
+    { keywords: 'réceptionniste hôtel débutant', location: loc },
+    { keywords: 'femme de chambre équipier hôtel', location: loc },
+    { keywords: 'serveur restauration débutant', location: loc },
+    { keywords: 'vendeur caissier sans diplôme', location: loc },
+    { keywords: 'job étudiant sans expérience', location: loc },
+    { keywords: 'aide à domicile débutant', location: loc },
   ];
 
   try {
@@ -779,13 +789,16 @@ async function fetchJoobleFR(customQuery) {
 async function fetchIndeedRSSFR() {
   const loc = getUserLocation();
   const queries = [
-    { q: 'animateur+éducateur+BAFA' },
-    { q: 'assistant+RH+recrutement' },
-    { q: 'conseiller+clientèle+téléconseiller' },
-    { q: 'réceptionniste+hôtel' },
-    { q: 'débutant+sans+expérience' },
-    { q: 'accompagnant+scolaire+AESH' },
-    { q: 'chargé+clientèle+accueil' },
+    { q: 'baby+sitter+garde+enfant+débutant' },
+    { q: 'animateur+périscolaire+BAFA+sans+expérience' },
+    { q: 'AED+surveillant+assistant+éducation' },
+    { q: 'téléconseiller+débutant+formation+assurée' },
+    { q: 'hôtesse+accueil+débutant' },
+    { q: 'vendeur+caissier+sans+diplôme' },
+    { q: 'réceptionniste+hôtel+débutant' },
+    { q: 'femme+de+chambre+équipier+hôtel' },
+    { q: 'serveur+restauration+débutant' },
+    { q: 'job+étudiant+sans+expérience' },
   ];
   try {
     const all = await Promise.all(queries.map(({ q }) => {
@@ -803,8 +816,10 @@ async function fetchIndeedRSSFR() {
 async function fetchJobtomeRSSFR() {
   const loc = getUserLocation().toLowerCase().replace(/ /g,'-').replace(/[^a-z0-9-]/g,'');
   const queries = [
-    'animateur', 'educateur', 'assistant-rh', 'conseiller-clientele',
-    'receptionniste', 'hotellerie', 'debutant',
+    'baby-sitter', 'animateur-periscolaire', 'assistant-education',
+    'teleconseiller-debutant', 'hotesse-accueil', 'vendeur-debutant',
+    'receptionniste-hotel-debutant', 'femme-de-chambre', 'serveur-restauration',
+    'job-etudiant', 'emploi-sans-diplome',
   ];
   try {
     const all = await Promise.all(queries.map(q => {
@@ -822,7 +837,8 @@ async function fetchJobtomeRSSFR() {
 async function fetchTalentRSSFR() {
   const loc = getUserLocation();
   const queries = [
-    'animateur éducateur', 'assistant RH', 'téléconseiller', 'réceptionniste hôtel',
+    'baby sitter débutant', 'animateur périscolaire', 'téléconseiller débutant',
+    'vendeur débutant', 'réceptionniste hôtel débutant', 'job étudiant sans expérience',
   ];
   try {
     const all = await Promise.all(queries.map(q => {
