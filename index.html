@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mon Espace Emploi ✨</title>
+<title>L'espace de Nenita 🌸</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -230,14 +230,14 @@ nav{background:white;border-bottom:1px solid var(--border);padding:0 1.5rem;disp
 <!-- ── LOGIN PAGE ─────────────────────────────────── -->
 <div id="loginPage">
   <div class="login-box">
-    <span class="login-petals">✨</span>
-    <div class="login-logo">✿ Mon <span>Espace</span> Emploi</div>
-    <p class="login-sub">Ton espace de recherche d'emploi personnel.<br>Entre ton mot de passe pour accéder.</p>
+    <span class="login-petals">🌸</span>
+    <div class="login-logo">✿ <span>Nenita</span> cherche</div>
+    <p class="login-sub">Ton espace emploi personnel, Nenita.<br>Entre ton mot de passe pour accéder à tes offres.</p>
     <div class="login-field">
       <label>Mot de passe</label>
       <input type="password" id="loginPwd" placeholder="••••••••••••" autocomplete="current-password">
     </div>
-    <button class="btn-login" onclick="doLogin()">✨ Accéder à mon espace</button>
+    <button class="btn-login" onclick="doLogin()">🌸 Accéder à mon espace</button>
     <div class="login-error" id="loginError">Mot de passe incorrect. Réessaie !</div>
   </div>
 </div>
@@ -246,7 +246,7 @@ nav{background:white;border-bottom:1px solid var(--border);padding:0 1.5rem;disp
 <div id="app" style="display:none;">
 
 <nav>
-  <div class="nav-logo">✿ Mon <span>Espace</span></div>
+  <div class="nav-logo">✿ <span>Nenita</span> cherche</div>
   <button class="nav-tab active" id="tab-france" onclick="showPage('france',this)">🇫🇷 Offres</button>
   <button class="nav-tab" id="tab-aupair" onclick="showPage('aupair',this)">✈️ Au Pair</button>
   <button class="nav-tab" onclick="showPage('favoris',this)">❤️ Favoris <span class="badge" id="favBadge">0</span></button>
@@ -261,9 +261,9 @@ nav{background:white;border-bottom:1px solid var(--border);padding:0 1.5rem;disp
 <div class="page active" id="page-france">
   <div class="hero">
     <div class="hero-petals" id="petals"></div>
-    <div class="hero-greeting" id="heroGreeting">Mon espace emploi ✨</div>
-    <h1 class="hero-title">Des offres faites<br><em>pour commencer</em></h1>
-    <p class="hero-sub">Éducation, RH, relation client, hôtellerie — des postes accessibles sans diplôme ni expérience, partout en France.</p>
+    <div class="hero-greeting">Bonjour Nenita 🌸</div>
+    <h1 class="hero-title">Ton espace emploi<br><em>rien que pour toi</em></h1>
+    <p class="hero-sub">Éducation, RH, relation client, hôtellerie — des offres en Île-de-France adaptées à ton profil, sans diplôme ni expérience requis.</p>
     <div class="hero-motivation" id="heroMotivation"></div>
   </div>
 
@@ -421,12 +421,9 @@ nav{background:white;border-bottom:1px solid var(--border);padding:0 1.5rem;disp
   <div class="config-section">
 
     <div class="config-card">
-      <div class="config-title">👤 Personnalisation</div>
-      <div class="config-sub">Personnalise l'espace avec ton prénom et ta ville de recherche.</div>
-      <div class="config-grid">
-        <div class="field"><label>Prénom (affiché dans l'app)</label><input type="text" id="cfgName" placeholder="ex: Marie"></div>
-        <div class="field"><label>Ville / région de recherche</label><input type="text" id="cfgLocation" placeholder="ex: Paris, Lyon, Bordeaux"></div>
-      </div>
+      <div class="config-title">📍 Zone de recherche</div>
+      <div class="config-sub">Ville ou région utilisée pour les offres France (ex : Paris, Île-de-France, Lyon…).</div>
+      <div class="field"><label>Ville / région</label><input type="text" id="cfgLocation" placeholder="ex: Paris, Île-de-France"></div>
     </div>
 
     <div class="config-card">
@@ -450,11 +447,6 @@ nav{background:white;border-bottom:1px solid var(--border);padding:0 1.5rem;disp
       <div class="field"><label>Clé API Anthropic</label><input type="text" id="cfgClaude" placeholder="sk-ant-…"></div>
     </div>
 
-    <div class="config-card">
-      <div class="config-title">🔒 Mot de passe (optionnel)</div>
-      <div class="config-sub">Protège l'accès au site. Laisse vide pour désactiver le mot de passe. Le changement prend effet au prochain rechargement.</div>
-      <div class="field"><label>Nouveau mot de passe</label><input type="password" id="cfgPwd" placeholder="Laisse vide = pas de mot de passe"></div>
-    </div>
 
     <button class="btn-save" onclick="saveConfig()">💾 Enregistrer la configuration</button>
 
@@ -495,20 +487,21 @@ nav{background:white;border-bottom:1px solid var(--border);padding:0 1.5rem;disp
 ═══════════════════════════════════════════════════════ -->
 <script>
 // ── AUTH ──────────────────────────────────────────────
-const SESSION_KEY = 'emp_session';
+const SESSION_KEY = 'nenita_session';
 
 async function sha256(msg) {
   const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(msg));
   return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
 }
 
+const REAL_HASH = (async () => await sha256('OleTropBien12!'))();
+
 async function doLogin() {
   const pwd = document.getElementById('loginPwd').value;
   if (!pwd) return;
-  const storedHash = localStorage.getItem('emp_pwd_hash');
-  const inputHash = await sha256(pwd);
-  if (inputHash === storedHash) {
-    localStorage.setItem(SESSION_KEY, btoa('auth_' + Date.now()));
+  const [inputHash, expected] = await Promise.all([sha256(pwd), REAL_HASH]);
+  if (inputHash === expected) {
+    localStorage.setItem(SESSION_KEY, btoa('nenita_auth_' + Date.now()));
     document.getElementById('loginPage').classList.remove('show');
     document.getElementById('app').style.display = 'block';
     document.getElementById('logoutBtn').style.display = 'flex';
@@ -529,12 +522,7 @@ function doLogout() {
 }
 
 function checkAuth() {
-  const hasPwd = !!localStorage.getItem('emp_pwd_hash');
-  if (!hasPwd) {
-    // No password configured — skip login
-    document.getElementById('app').style.display = 'block';
-    initApp();
-  } else if (localStorage.getItem(SESSION_KEY)) {
+  if (localStorage.getItem(SESSION_KEY)) {
     document.getElementById('app').style.display = 'block';
     document.getElementById('logoutBtn').style.display = 'flex';
     initApp();
@@ -547,11 +535,12 @@ document.getElementById('loginPwd').addEventListener('keydown', e => { if (e.key
 
 // ── CONSTANTS ─────────────────────────────────────────
 const MOTIVATIONS = [
-  'Pas besoin d\'un parcours parfait pour décrocher un poste qui te correspond. 🌱',
-  'Chaque candidature envoyée est une graine plantée. Tu vas y arriver ! 💪',
-  'Ton enthousiasme et ta motivation sont une vraie force. Les recruteurs le savent. ✨',
-  'Le bon poste pour toi existe — continue à chercher, il est proche. 🌸',
-  'Débutant(e) ne veut pas dire moins capable. Ça veut dire prêt(e) à apprendre. 🎯',
+  'Chaque candidature envoyée en Île-de-France est une graine plantée. 🌱',
+  'Ton profil humain est une vraie force — les employeurs franciliens le savent. 💪',
+  'Le bon poste à Paris ou aux alentours attend juste d\'être trouvé. Tu vas y arriver, Nenita. ✨',
+  'Pas besoin d\'un diplôme parfait pour faire un travail parfait. 🌸',
+  'Ta motivation vaut mille lignes de CV. Fonce, Nenita ! 🎯',
+  'Un refus n\'est pas un échec, c\'est une redirection vers le bon endroit. 💫',
 ];
 
 const CAT_KW = {
@@ -1485,49 +1474,32 @@ Donne 3 arguments percutants et concrets à valoriser dans la lettre de motivati
 // ═══════════════════════════════════════════════════════
 
 function loadConfigUI() {
-  document.getElementById('cfgName').value      = getCfg('emp_name');
-  document.getElementById('cfgLocation').value  = getCfg('emp_location', 'Paris');
+  document.getElementById('cfgLocation').value  = getCfg('emp_location', 'Île-de-France');
   document.getElementById('cfgAdzunaId').value  = getCfg('emp_adzuna_id');
   document.getElementById('cfgAdzunaKey').value = getCfg('emp_adzuna_key');
   document.getElementById('cfgJooble').value    = getCfg('emp_jooble');
   document.getElementById('cfgClaude').value    = getCfg('emp_claude');
-  document.getElementById('cfgPwd').value       = '';
 }
 
-async function saveConfig() {
-  const name = document.getElementById('cfgName').value.trim();
-  const loc  = document.getElementById('cfgLocation').value.trim() || 'Paris';
+function saveConfig() {
+  const loc  = document.getElementById('cfgLocation').value.trim() || 'Île-de-France';
   const azId = document.getElementById('cfgAdzunaId').value.trim();
   const azKy = document.getElementById('cfgAdzunaKey').value.trim();
   const jb   = document.getElementById('cfgJooble').value.trim();
   const cl   = document.getElementById('cfgClaude').value.trim();
-  const pwd  = document.getElementById('cfgPwd').value;
 
-  if (name) localStorage.setItem('emp_name', name); else localStorage.removeItem('emp_name');
   localStorage.setItem('emp_location', loc);
   if (azId) localStorage.setItem('emp_adzuna_id', azId); else localStorage.removeItem('emp_adzuna_id');
   if (azKy) localStorage.setItem('emp_adzuna_key', azKy); else localStorage.removeItem('emp_adzuna_key');
   if (jb)   localStorage.setItem('emp_jooble', jb);  else localStorage.removeItem('emp_jooble');
   if (cl)   localStorage.setItem('emp_claude', cl);   else localStorage.removeItem('emp_claude');
 
-  if (pwd) {
-    localStorage.setItem('emp_pwd_hash', await sha256(pwd));
-  } else if (document.getElementById('cfgPwd').value === '') {
-    // Leave existing password unchanged if field is left empty
-  }
-
-  updateGreeting();
   document.getElementById('geoBadgeText').innerText = loc + ' 🗺️';
-
   showPage('france', document.getElementById('tab-france'));
   loadJobsFR(null);
 }
 
-function updateGreeting() {
-  const name = getCfg('emp_name');
-  const greeting = document.getElementById('heroGreeting');
-  if (greeting) greeting.innerText = name ? `Bonjour ${name} ✨` : 'Mon espace emploi ✨';
-}
+function updateGreeting() { /* Nenita hardcodée dans le HTML */ }
 
 // ═══════════════════════════════════════════════════════
 // INIT
@@ -1610,7 +1582,7 @@ function initApp() {
   updateFavCount();
   renderSuivi();
 
-  document.getElementById('geoBadgeText').innerText = 'Île-de-France 🗺️';
+  document.getElementById('geoBadgeText').innerText = getCfg('emp_location', 'Île-de-France') + ' 🗺️';
   document.getElementById('searchInput').addEventListener('keydown', e => {
     if (e.key === 'Enter') doSearch();
   });
