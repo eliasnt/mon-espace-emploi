@@ -30,15 +30,12 @@ try:
     from config import (
         ADZUNA_APP_ID, ADZUNA_APP_KEY,
         JOOBLE_KEY,
-        FT_CLIENT_ID, FT_CLIENT_SECRET,
         GITHUB_AUTO_PUSH,
     )
 except ImportError:
-    ADZUNA_APP_ID    = os.getenv('ADZUNA_APP_ID', '')
-    ADZUNA_APP_KEY   = os.getenv('ADZUNA_APP_KEY', '')
-    JOOBLE_KEY       = os.getenv('JOOBLE_KEY', '')
-    FT_CLIENT_ID     = os.getenv('FT_CLIENT_ID', '')       # France Travail
-    FT_CLIENT_SECRET = os.getenv('FT_CLIENT_SECRET', '')   # France Travail
+    ADZUNA_APP_ID  = os.getenv('ADZUNA_APP_ID', '')
+    ADZUNA_APP_KEY = os.getenv('ADZUNA_APP_KEY', '')
+    JOOBLE_KEY     = os.getenv('JOOBLE_KEY', '')
     GITHUB_AUTO_PUSH = True
 
 DATA_DIR = Path(__file__).parent.parent / 'data'
@@ -229,113 +226,7 @@ def now_iso() -> str:
 
 
 # ══════════════════════════════════════════════════════════════
-# SOURCE 1 : FRANCE TRAVAIL (PÔLE EMPLOI) ← MEILLEURE SOURCE IDF
-# ══════════════════════════════════════════════════════════════
-# Inscription gratuite : https://pole-emploi.io
-# Créer une application → souscrire "Offres d'emploi v2" → récupérer client_id / client_secret
-
-def _ft_token() -> str:
-    """OAuth2 client_credentials pour France Travail."""
-    if not FT_CLIENT_ID or not FT_CLIENT_SECRET:
-        return ''
-    try:
-        r = requests.post(
-            'https://entreprise.francetravail.fr/connexion/oauth2/access_token',
-            params={'realm': '/partenaire'},
-            data={
-                'grant_type': 'client_credentials',
-                'client_id': FT_CLIENT_ID,
-                'client_secret': FT_CLIENT_SECRET,
-                'scope': 'api_offresdemploiv2 o2dsoffre',
-            },
-            timeout=10,
-        )
-        return r.json().get('access_token', '')
-    except Exception as e:
-        print(f"  [FT] Erreur token : {e}")
-        return ''
-
-
-def fetch_france_travail() -> list:
-    """Offres IDF depuis l'API officielle France Travail."""
-    if not FT_CLIENT_ID or not FT_CLIENT_SECRET:
-        print("  [FT] Clés manquantes — ignoré (voir config.py)")
-        return []
-
-    token = _ft_token()
-    if not token:
-        print("  [FT] Impossible d'obtenir le token")
-        return []
-
-    # Codes département IDF passés directement à l'API → 100% IDF garanti
-    IDF_DEPTS = '75,77,78,91,92,93,94,95'
-    queries = [
-        'animateur éducateur jeunesse',
-        'assistant BAFA périscolaire animation',
-        'accompagnant scolaire AESH',
-        'assistant ressources humaines RH recrutement',
-        'chargé clientèle téléconseiller relation client',
-        'réceptionniste hôtel hébergement',
-        'agent accueil hôtellerie',
-        'débutant sans expérience formation',
-        'gouvernante chambre hôtel',
-        'secrétaire administratif accueil',
-    ]
-    headers = {'Authorization': f'Bearer {token}', 'Accept': 'application/json'}
-    results = []
-    seen_ids = set()
-
-    for q in queries:
-        try:
-            r = requests.get(
-                'https://api.francetravail.io/partenaire/offresdemploi/v2/offres/search',
-                params={
-                    'motsCles': q,
-                    'departement': IDF_DEPTS,
-                    'range': '0-49',
-                    'tri': 1,  # date décroissante
-                },
-                headers=headers,
-                timeout=12,
-            )
-            if r.status_code != 200:
-                continue
-            data = r.json()
-            for o in data.get('resultats', []):
-                oid = o.get('id', '')
-                if not oid or oid in seen_ids:
-                    continue
-                seen_ids.add(oid)
-                lieu = o.get('lieuTravail', {})
-                cp = lieu.get('codePostal', '')
-                loc = lieu.get('libelle', '')
-                # Double-check IDF even though API already filters by departement
-                if cp and cp[:2] not in IDF_CP_PREFIXES:
-                    continue
-                results.append({
-                    'id': f'ft-{oid}',
-                    'source': 'francetravail',
-                    'title': o.get('intitule', ''),
-                    'company': o.get('entreprise', {}).get('nom', ''),
-                    'location': f"{loc} ({cp[:2] if cp else ''})",
-                    'postal_code': cp,
-                    'contract': o.get('typeContratLibelle', ''),
-                    'date': o.get('dateCreation', ''),
-                    'url': o.get('origineOffre', {}).get('urlOrigine')
-                           or f"https://candidat.francetravail.fr/offres/recherche/detail/{oid}",
-                    'desc': clean_desc(o.get('description', '')),
-                    '_idf_verified': True,
-                })
-            time.sleep(0.3)  # courtoisie rate-limit
-        except Exception as e:
-            print(f"  [FT] Erreur pour '{q}' : {e}")
-
-    print(f"  [FT] {len(results)} offres IDF récupérées")
-    return results
-
-
-# ══════════════════════════════════════════════════════════════
-# SOURCE 2 : ADZUNA FRANCE
+# SOURCE 1 : ADZUNA FRANCE
 # ══════════════════════════════════════════════════════════════
 
 def fetch_adzuna_fr() -> list:
@@ -852,13 +743,12 @@ def run(push: bool = True) -> None:
 
     # ── OFFRES FRANCE IDF ──
     print("\n📍 OFFRES FRANCE (Île-de-France)")
-    ft_jobs   = fetch_france_travail()
     az_jobs   = fetch_adzuna_fr()
     jb_jobs   = fetch_jooble_fr()
     ind_jobs  = fetch_indeed_rss_fr()
     jtfr_jobs = fetch_jobtome_fr()
 
-    france_jobs = dedup(ft_jobs + az_jobs + jb_jobs + ind_jobs + jtfr_jobs)
+    france_jobs = dedup(az_jobs + jb_jobs + ind_jobs + jtfr_jobs)
     print(f"\n  → {len(france_jobs)} offres IDF au total")
 
     # ── OFFRES AU PAIR ESPAGNE ──
@@ -892,11 +782,10 @@ def run(push: bool = True) -> None:
         'france': {
             'total': len(france_jobs),
             'by_source': {
-                'francetravail': count_src(france_jobs, 'francetravail'),
-                'adzuna':        count_src(france_jobs, 'adzuna'),
-                'jooble':        count_src(france_jobs, 'jooble'),
-                'indeed':        count_src(france_jobs, 'indeed'),
-                'jobtome':       count_src(france_jobs, 'jobtome'),
+                'adzuna':  count_src(france_jobs, 'adzuna'),
+                'jooble':  count_src(france_jobs, 'jooble'),
+                'indeed':  count_src(france_jobs, 'indeed'),
+                'jobtome': count_src(france_jobs, 'jobtome'),
             },
         },
         'aupair': {
