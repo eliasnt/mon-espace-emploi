@@ -132,18 +132,6 @@
     "desc": "My name is Laura and I am 36 years old. I have references I can share with you. If you are looking for a babysitter or nanny and would like to know more about me, feel free to contact me."
   },
   {
-    "id": "azes-5728613132",
-    "source": "adzuna_es",
-    "_sourceCity": "Barcelona",
-    "title": "Se busca canguro para cuidado de niños en Barcelona",
-    "company": "Sitly",
-    "location": "Barcelona",
-    "contract": "Au Pair",
-    "date": "2026-05-14T02:59:01Z",
-    "url": "https://www.adzuna.es/details/5728613132?utm_medium=api&utm_source=7d245c5c",
-    "desc": "Hi everyone, Im Luna and I'm looking for a babysitter to get the kids ready in the morning and take them to school. In the afternoon, I need someone to pick them up and play with them until I return from work."
-  },
-  {
     "id": "azes-5728258676",
     "source": "adzuna_es",
     "_sourceCity": "Barcelona",
@@ -154,6 +142,18 @@
     "date": "2026-05-13T22:32:18Z",
     "url": "https://www.adzuna.es/details/5728258676?utm_medium=api&utm_source=7d245c5c",
     "desc": "¿Buscas una buena oportunidad para ganar ingresos extra este verano? ¿Te llevas bien con los niños y se te dan bien los estudios? En Tusclasesparticulares, empresa líder en el sector educativo, estamos buscando canguros para ayudar a los niños con sus deberes y aprender jugando. Tareas: Ayudar a los niños con sus deberes Jugar con ellos con actividades para aprender Requisitos: Experiencia trabajando con niños (no imprescindible, pero valorada). Máxima responsabilidad y compromiso. Beneficios: …"
+  },
+  {
+    "id": "azes-5728613132",
+    "source": "adzuna_es",
+    "_sourceCity": "Barcelona",
+    "title": "Se busca canguro para cuidado de niños en Barcelona",
+    "company": "Sitly",
+    "location": "Barcelona",
+    "contract": "Au Pair",
+    "date": "2026-05-14T02:59:01Z",
+    "url": "https://www.adzuna.es/details/5728613132?utm_medium=api&utm_source=7d245c5c",
+    "desc": "Hi everyone, Im Luna and I'm looking for a babysitter to get the kids ready in the morning and take them to school. In the afternoon, I need someone to pick them up and play with them until I return from work."
   },
   {
     "id": "azes-5565450144",
@@ -248,7 +248,7 @@
     "location": "Barcelona",
     "contract": "Au Pair",
     "date": "2026-04-15T12:37:52Z",
-    "url": "https://www.adzuna.es/land/ad/5700014544?se=xliqJQZo8RG0btGxqHH3qw&utm_medium=api&utm_source=7d245c5c&v=A0FA14C9AE24A710C0BFECDEF42066963B26CC88",
+    "url": "https://www.adzuna.es/land/ad/5700014544?se=hOIy1Alo8RGfB72z_DrYeQ&utm_medium=api&utm_source=7d245c5c&v=A0FA14C9AE24A710C0BFECDEF42066963B26CC88",
     "desc": "Busco cuidadora interna en la ciudad de Barcelona para atender a persona mayor dependiente."
   },
   {
@@ -272,7 +272,7 @@
     "location": "Barcelona",
     "contract": "Au Pair",
     "date": "2026-04-14T17:17:55Z",
-    "url": "https://www.adzuna.es/land/ad/5699085733?se=xliqJQZo8RG0btGxqHH3qw&utm_medium=api&utm_source=7d245c5c&v=A48A030382E89A47F9754785E9F9C160E3F142C6",
+    "url": "https://www.adzuna.es/land/ad/5699085733?se=hOIy1Alo8RGfB72z_DrYeQ&utm_medium=api&utm_source=7d245c5c&v=A48A030382E89A47F9754785E9F9C160E3F142C6",
     "desc": "¿Buscas trabajo en ayuda a la dependencia? Este mes de junio surgen nuevas oportunidades para cuidadores en Barcelona. ¡Inscríbete gratis hoy mismo!"
   },
   {
@@ -296,7 +296,7 @@
     "location": "Barcelona",
     "contract": "Au Pair",
     "date": "2026-04-15T12:37:52Z",
-    "url": "https://www.adzuna.es/land/ad/5700014567?se=xliqJQZo8RG0btGxqHH3qw&utm_medium=api&utm_source=7d245c5c&v=153B4B03F5E86D57E598CE0ACD8E46D421570874",
+    "url": "https://www.adzuna.es/land/ad/5700014567?se=hOIy1Alo8RGfB72z_DrYeQ&utm_medium=api&utm_source=7d245c5c&v=153B4B03F5E86D57E598CE0ACD8E46D421570874",
     "desc": "Se busca cuidador/a por horas en la ciudad de Barcelona para atender a persona mayor dependiente."
   },
   {
@@ -344,7 +344,7 @@
     "location": "Barcelona",
     "contract": "Au Pair",
     "date": "2026-04-24T12:42:05Z",
-    "url": "https://www.adzuna.es/land/ad/5709274751?se=xliqJQZo8RG0btGxqHH3qw&utm_medium=api&utm_source=7d245c5c&v=ECCD9DE2BB722E18432F855CC1B3F0CE01C6CCA3",
+    "url": "https://www.adzuna.es/land/ad/5709274751?se=hOIy1Alo8RGfB72z_DrYeQ&utm_medium=api&utm_source=7d245c5c&v=ECCD9DE2BB722E18432F855CC1B3F0CE01C6CCA3",
     "desc": "Buscamos empleadas domésticas y cuidadoras de niños JORNADA COMPLETA. Documentación en regla y referencias de trabajos anteriores. Puedes enviar el CV a •••••••••••••••••••••••••"
   },
   {
@@ -356,7 +356,7 @@
     "location": "Barcelona",
     "contract": "Au Pair",
     "date": "2026-06-01T13:14:04Z",
-    "url": "https://www.adzuna.es/land/ad/5747518369?se=xliqJQZo8RG0btGxqHH3qw&utm_medium=api&utm_source=7d245c5c&v=268D796DFD45D98071D2B87B861ABEF668B0A57B",
+    "url": "https://www.adzuna.es/land/ad/5747518369?se=hOIy1Alo8RGfB72z_DrYeQ&utm_medium=api&utm_source=7d245c5c&v=268D796DFD45D98071D2B87B861ABEF668B0A57B",
     "desc": "Mi madre se ha roto el pie y necesita ayuda todo el día, Para hacer el desayuno, comida y cena, ayudarla a moverse, si necesita ir al baño, ayuda para ducharse, limpieza de la casa, y cuando este mejor sacarla un poco a la calle con la silla de 9 a 19 mas o menos"
   },
   {
@@ -380,7 +380,7 @@
     "location": "Barcelona",
     "contract": "Au Pair",
     "date": "2026-04-11T12:36:30Z",
-    "url": "https://www.adzuna.es/land/ad/5696598627?se=xliqJQZo8RG0btGxqHH3qw&utm_medium=api&utm_source=7d245c5c&v=452396C600893C87A269142D5BBCA681D1110B14",
+    "url": "https://www.adzuna.es/land/ad/5696598627?se=hOIy1Alo8RGfB72z_DrYeQ&utm_medium=api&utm_source=7d245c5c&v=452396C600893C87A269142D5BBCA681D1110B14",
     "desc": "En Nona Barcelona, agencia especializada en la selección de personal doméstico, estamos en búsqueda de empleadas del hogar y cuidadoras de niños para trabajar con distintas familias. Ofrecemos: Puestos de trabajo estables con familias previamente seleccionadas Jornada completa Acompañamiento y seguimiento por parte de la agencia Condiciones acordes a la experiencia y responsabilidades del puesto Requisitos: Documentación en regla Experiencia demostrable en servicio doméstico y/o cuidado de niño…"
   },
   {
@@ -392,7 +392,7 @@
     "location": "Barcelona",
     "contract": "Au Pair",
     "date": "2026-03-25T11:30:57Z",
-    "url": "https://www.adzuna.es/land/ad/5677963893?se=xliqJQZo8RG0btGxqHH3qw&utm_medium=api&utm_source=7d245c5c&v=5DADC913B8A0C04E45FE72A591A3A33192E6A913",
+    "url": "https://www.adzuna.es/land/ad/5677963893?se=hOIy1Alo8RGfB72z_DrYeQ&utm_medium=api&utm_source=7d245c5c&v=5DADC913B8A0C04E45FE72A591A3A33192E6A913",
     "desc": "¡Hola! Estamos buscando 7 cuidadoras de personas mayores y dependientes en su domicilio con incorporación a corto plazo. Ofrecemos: ✅ Contrato legal y alta en la Seguridad Social ✅ Salario por ley y respeto estricto de tus horas de descanso ✅ Trabajo en domicilios adaptados Si te interesa y tienes experiencia previa, por favor, rellena este breve formulario para que puedan conocerte mejor: ••••••••••••••••••••••••••••••••••• ¡Muchas gracias y suerte!"
   },
   {

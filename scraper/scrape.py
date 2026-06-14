@@ -12,6 +12,7 @@ Usage:
 """
 
 import sys
+sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 import os
 import json
 import re
@@ -89,6 +90,21 @@ IDF_CITIES = {
     'la celle-saint-cloud', 'les clayes', 'plaisir', 'maurepas',
     'saint-quentin-en-yvelines', 'montigny', 'guyancourt', 'elancourt',
     'acheres', 'andrezieux', 'montlhery', 'longjumeau',
+    # Yvelines supplémentaires (78)
+    'les-mureaux', 'mantes-la-jolie', 'mantes', 'poissy', 'verneuil-sur-seine',
+    'port-marly', 'maisons-laffitte', 'le vesinet', 'chatou',
+    'bonneuil', 'guyancourt', 'velizy-villacoublay',
+    # Seine-Saint-Denis supplémentaires (93)
+    'tremblay-en-france', 'tremblay', 'villepinte', 'le blanc-mesnil',
+    'villemomble', 'les pavillons-sous-bois', 'gagny', 'neuilly-sur-marne',
+    'neuilly-plaisance', 'gournay-sur-marne', 'champs-sur-marne',
+    'lognes', 'torcy', 'noisiel', 'collegien', 'bussy-saint-georges',
+    # Val-de-Marne supplémentaires (94)
+    'sucy-en-brie', 'boissy-saint-leger', 'villecresnes', 'mandres',
+    'perigny', 'la queue-en-brie', 'santeny',
+    # Essonne supplémentaires (91)
+    'draveil', 'viry-chatillon', 'grigny', 'ris-orangis', 'courcouronnes',
+    'bondoufle', 'lisses', 'corbeil-essonnes',
 }
 
 # Abréviations d'États américains (pour rejeter "Paris, TX" etc.)
@@ -235,37 +251,39 @@ def fetch_adzuna_fr() -> list:
         return []
 
     queries = [
-        # Éducation / jeunesse — jobs accessibles sans diplôme
-        'animateur périscolaire débutant BAFA',
-        'baby sitter garde enfant domicile débutant',
-        'assistant éducation AED surveillant lycée',
-        'AESH accompagnant élèves handicap débutant',
-        'animateur centre loisirs ALSH sans expérience',
-        # RH junior
-        'assistant RH junior débutant recrutement',
-        'chargé recrutement junior sans expérience',
-        # Relation client — postes très accessibles
-        'téléconseiller débutant formation assurée',
-        'hôtesse accueil standardiste débutant',
-        'conseiller clientèle débutant sans expérience',
-        'vendeur débutant sans expérience magasin',
-        'caissier hôte de caisse sans diplôme',
-        # Hôtellerie — postes sans diplôme requis
-        'réceptionniste hôtel débutant junior',
-        'femme de chambre valet équipier hôtel',
-        'serveur restauration débutant sans expérience',
-        'agent entretien hôtel ménage',
-        # Cross-secteur vraiment sans expérience
-        'job étudiant temps partiel Paris',
-        'aide à domicile auxiliaire vie débutant',
-        'emploi sans diplôme sans expérience',
-        'emploi saisonnier Île-de-France étudiant',
+        # Jeunesse / garde d'enfants — emplois étudiants par excellence
+        'baby sitter garde enfant',
+        'animateur enfant',
+        'soutien scolaire cours particuliers',
+        'animation vacances periscolaire',
+        # Commerce & distribution — aucun diplôme requis
+        'vendeur magasin',
+        'employe polyvalent commerce',
+        'caissier employe libre service',
+        'agent accueil hotesse',
+        # Logistique & entrepôt — nombreux postes CDD/intérim
+        'preparateur commandes entrepot',
+        'manutentionnaire logistique',
+        # Relation client & téléphone
+        'teleconseiller service client',
+        'charge clientele',
+        # Restauration & hôtellerie
+        'serveur aide cuisine restauration',
+        'receptionniste hotel',
+        # Livraison & mobilité
+        'livreur livraison',
+        # Enquête / terrain — missions ponctuelles
+        'enqueteur terrain sondage',
+        # Aide à la personne — accessible sans diplôme
+        'aide domicile auxiliaire',
+        # Securite — de nombreux postes ouverts
+        'agent securite gardiennage',
     ]
     results = []
     seen = set()
 
     for q in queries:
-        for page in [1, 2]:
+        for page in [1, 2, 3]:
             try:
                 r = requests.get(
                     f'https://api.adzuna.com/v1/api/jobs/fr/search/{page}',
@@ -319,16 +337,18 @@ def fetch_jooble_fr() -> list:
         return []
 
     queries = [
-        ('animateur périscolaire débutant BAFA', 'Île-de-France'),
-        ('baby sitter garde enfant débutant', 'Paris'),
-        ('téléconseiller débutant formation', 'Île-de-France'),
-        ('hôtesse accueil débutant', 'Paris'),
-        ('réceptionniste hôtel débutant junior', 'Paris'),
-        ('femme de chambre valet hôtel', 'Île-de-France'),
-        ('serveur restauration débutant', 'Paris'),
-        ('vendeur débutant sans expérience', 'Île-de-France'),
-        ('job étudiant temps partiel', 'Paris'),
-        ('aide à domicile auxiliaire débutant', 'Île-de-France'),
+        ('baby sitter garde enfant', 'Paris'),
+        ('animateur enfant animation', 'Île-de-France'),
+        ('soutien scolaire cours particuliers', 'Île-de-France'),
+        ('vendeur magasin employe polyvalent', 'Île-de-France'),
+        ('caissier employe libre service', 'Paris'),
+        ('teleconseiller service client', 'Île-de-France'),
+        ('preparateur commandes entrepot', 'Île-de-France'),
+        ('receptionniste hotel accueil', 'Paris'),
+        ('serveur restauration plongeur', 'Paris'),
+        ('livreur livraison coursier', 'Île-de-France'),
+        ('aide domicile auxiliaire', 'Île-de-France'),
+        ('enqueteur terrain sondage', 'Paris'),
     ]
     results = []
     seen = set()

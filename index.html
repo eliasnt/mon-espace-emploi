@@ -544,11 +544,14 @@ const MOTIVATIONS = [
 ];
 
 const CAT_KW = {
-  edu: ['animateur','animation','BAFA','périscolaire','AESH','accompagnant','assistant éducatif','AED','assistant éducation','surveillant','éducateur','jeunesse','enfant','baby-sitter','baby sitter','garde enfant','garde d\'enfant','crèche','maternelle','loisirs','ALSH','centre de loisirs','animateur loisirs'],
-  rh:  ['ressources humaines','RH','recrutement','recruteur','assistant RH','junior RH','chargé RH','administration personnel','chargé de formation','paie','secrétaire RH'],
-  client: ['clientèle','relation client','téléconseiller','conseiller clientèle','chargé de clientèle','support client','call center','hôtesse','hôte','accueil','réception','standard','service client','SAV','vendeur','vendeuse','vente','conseiller vente','caissier','caissière','hôte de caisse','conseiller commercial'],
-  hotel: ['réceptionniste','hôtel','hébergement','femme de chambre','valet de chambre','valet chambre','équipier hôtel','équipier','bagagiste','conciergerie','hôtellerie','restauration','serveur','serveuse','commis','plongeur','aide cuisine','agent entretien hôtel','chambre','ménage hôtel'],
-  noxp: ['débutant','sans expérience','sans diplôme','formation assurée','pas d\'expérience','ouvert aux débutants','junior sans expérience','premier emploi','job étudiant','emploi étudiant','job temps partiel','emploi saisonnier','profil débutant','accessible sans expérience','étudiant recherche'],
+  edu:  ['animateur','animation','BAFA','périscolaire','AESH','accompagnant','AED','assistant éducation','surveillant','éducateur','enfant','baby-sitter','baby sitter','garde enfant','garde d\'enfant','crèche','maternelle','loisirs','ALSH','centre de loisirs','soutien scolaire','cours particulier','répétiteur','professeur domicile','colo','colonie vacances'],
+  rh:   ['ressources humaines','RH','recrutement','recruteur','assistant RH','administration personnel','paie','secrétaire RH'],
+  client: ['clientèle','relation client','téléconseiller','conseiller clientèle','call center','hôtesse','hôte','accueil','réception','standard','service client','SAV','vendeur','vendeuse','vente','caissier','caissière','hôte de caisse','employé libre service','employé de commerce','grande surface','magasin'],
+  hotel: ['réceptionniste','hôtel','hébergement','femme de chambre','valet de chambre','équipier','bagagiste','conciergerie','hôtellerie','restauration','serveur','serveuse','commis','plongeur','aide cuisine','barista','boulangerie','snack'],
+  logistique: ['manutentionnaire','préparateur de commandes','préparateur commandes','entrepôt','logistique','magasinier','cariste','opérateur logistique','livreur','coursier','chauffeur livreur','livraison','agent de quai'],
+  aide:  ['aide à domicile','auxiliaire de vie','aide ménagère','accompagnateur','assistant de vie','aide personnes','ADVF','agent de soins'],
+  securite: ['agent de sécurité','agent sécurité','gardiennage','vigile','SSIAP','gardien','enquêteur terrain','enquêteur','sondage','interviewer'],
+  noxp:  ['débutant','sans expérience','sans diplôme','formation assurée','pas d\'expérience','premier emploi','job étudiant','emploi étudiant','job temps partiel','emploi saisonnier','accessible sans expérience','étudiant'],
 };
 
 const CONTRACT_KW = {
@@ -562,8 +565,8 @@ const CONTRACT_KW = {
 const CONTRACT_LABELS = { cdi:'💼 CDI', cdd:'📅 CDD', alternance:'🎓 Alternance', partiel:'🕐 Temps partiel', stage:'🔍 Stage', other:'' };
 const CONTRACT_CLS = { cdi:'tag-cdi', cdd:'tag-cdd', alternance:'tag-alternance', partiel:'tag-partiel', stage:'tag-stage', other:'' };
 
-const CAT_LABELS = { edu:'📚 Éducation', rh:'👔 RH', client:'🤝 Relation client', hotel:'🏨 Hôtellerie', noxp:'✨ Sans exp.', other:'🔹 Autre' };
-const CAT_CLS    = { edu:'tag-edu', rh:'tag-rh', client:'tag-client', hotel:'tag-hotel', noxp:'tag-noxp', other:'tag-edu' };
+const CAT_LABELS = { edu:'📚 Éducation & Enfants', rh:'👔 RH & Admin', client:'🤝 Commerce & Accueil', hotel:'🏨 Hôtellerie & Resto', logistique:'📦 Logistique', aide:'🏠 Aide dom.', securite:'🔍 Sécu & Enquête', noxp:'✨ Sans exp.', other:'🔹 Autre' };
+const CAT_CLS    = { edu:'tag-edu', rh:'tag-rh', client:'tag-client', hotel:'tag-hotel', logistique:'tag-hotel', aide:'tag-noxp', securite:'tag-rh', noxp:'tag-noxp', other:'tag-edu' };
 
 const SRC_COLORS = { adzuna:'src-adzuna', jooble:'src-jooble', indeed:'src-indeed', jobtome:'src-jobtome', infojobs:'src-infojobs', talent:'src-talent', demo:'src-demo', adzuna_es:'src-adzuna' };
 const SRC_LABELS = { adzuna:'Adzuna FR', jooble:'Jooble', indeed:'Indeed', jobtome:'Jobtome', infojobs:'InfoJobs ES', talent:'Talent.com', demo:'Démo', adzuna_es:'Adzuna ES' };
@@ -689,30 +692,32 @@ async function fetchAdzunaFR(customQuery) {
 
   const loc = getUserLocation();
   const queries = customQuery ? [customQuery] : [
-    // Éducation / jeunesse sans diplôme
-    'animateur périscolaire débutant BAFA',
-    'baby sitter garde enfant domicile débutant',
-    'assistant éducation AED surveillant lycée',
-    'AESH accompagnant élèves débutant',
-    'animateur centre loisirs ALSH sans expérience',
-    // RH junior accessible
-    'assistant RH junior débutant recrutement',
-    'chargé recrutement junior sans expérience',
-    // Relation client sans expérience
-    'téléconseiller débutant formation assurée',
-    'hôtesse accueil standardiste débutant',
-    'conseiller clientèle débutant sans expérience',
-    'vendeur débutant sans expérience',
-    'caissier hôte de caisse sans diplôme',
-    // Hôtellerie sans diplôme requis
-    'réceptionniste hôtel débutant junior',
-    'femme de chambre valet équipier hôtel',
-    'serveur restauration débutant sans expérience',
-    'agent entretien ménage hôtel',
-    // Jobs étudiants / sans exp transversaux
-    'job étudiant temps partiel',
-    'aide à domicile auxiliaire débutant',
-    'emploi sans diplôme sans expérience',
+    // Jeunesse & enfants
+    'baby sitter garde enfant',
+    'animateur enfant animation',
+    'soutien scolaire cours particuliers',
+    'animation vacances periscolaire',
+    // Commerce & distribution
+    'vendeur magasin',
+    'employe polyvalent commerce',
+    'caissier employe libre service',
+    'agent accueil hotesse',
+    // Logistique & entrepôt
+    'preparateur commandes entrepot',
+    'manutentionnaire logistique',
+    // Relation client & téléphone
+    'teleconseiller service client',
+    'charge clientele',
+    // Restauration & hôtellerie
+    'serveur aide cuisine restauration',
+    'receptionniste hotel',
+    // Livraison
+    'livreur livraison coursier',
+    // Aide à la personne
+    'aide domicile auxiliaire',
+    // Enquête terrain & sécurité
+    'enqueteur terrain sondage',
+    'agent securite gardiennage',
   ];
 
   const pages = customQuery ? [1] : [1, 2];
@@ -747,16 +752,18 @@ async function fetchJoobleFR(customQuery) {
 
   const loc = getUserLocation();
   const queries = customQuery ? [{ keywords: customQuery, location: loc }] : [
-    { keywords: 'baby sitter garde enfant débutant', location: loc },
-    { keywords: 'animateur périscolaire BAFA sans expérience', location: loc },
-    { keywords: 'assistant RH junior débutant', location: loc },
-    { keywords: 'téléconseiller débutant formation assurée', location: loc },
-    { keywords: 'réceptionniste hôtel débutant', location: loc },
-    { keywords: 'femme de chambre équipier hôtel', location: loc },
-    { keywords: 'serveur restauration débutant', location: loc },
-    { keywords: 'vendeur caissier sans diplôme', location: loc },
-    { keywords: 'job étudiant sans expérience', location: loc },
-    { keywords: 'aide à domicile débutant', location: loc },
+    { keywords: 'baby sitter garde enfant', location: loc },
+    { keywords: 'animateur enfant animation', location: loc },
+    { keywords: 'soutien scolaire cours particuliers', location: loc },
+    { keywords: 'vendeur magasin employe polyvalent', location: loc },
+    { keywords: 'caissier employe libre service', location: loc },
+    { keywords: 'preparateur commandes manutentionnaire', location: loc },
+    { keywords: 'teleconseiller service client', location: loc },
+    { keywords: 'receptionniste hotel accueil', location: loc },
+    { keywords: 'serveur restauration plongeur', location: loc },
+    { keywords: 'livreur coursier livraison', location: loc },
+    { keywords: 'aide domicile auxiliaire', location: loc },
+    { keywords: 'enqueteur terrain agent securite', location: loc },
   ];
 
   try {
@@ -789,16 +796,19 @@ async function fetchJoobleFR(customQuery) {
 async function fetchIndeedRSSFR() {
   const loc = getUserLocation();
   const queries = [
-    { q: 'baby+sitter+garde+enfant+débutant' },
-    { q: 'animateur+périscolaire+BAFA+sans+expérience' },
-    { q: 'AED+surveillant+assistant+éducation' },
-    { q: 'téléconseiller+débutant+formation+assurée' },
-    { q: 'hôtesse+accueil+débutant' },
-    { q: 'vendeur+caissier+sans+diplôme' },
-    { q: 'réceptionniste+hôtel+débutant' },
-    { q: 'femme+de+chambre+équipier+hôtel' },
-    { q: 'serveur+restauration+débutant' },
-    { q: 'job+étudiant+sans+expérience' },
+    { q: 'baby+sitter+garde+enfant' },
+    { q: 'animateur+enfant+animation' },
+    { q: 'soutien+scolaire+cours+particuliers' },
+    { q: 'vendeur+magasin' },
+    { q: 'employe+polyvalent+commerce' },
+    { q: 'preparateur+commandes+entrepot' },
+    { q: 'manutentionnaire+logistique' },
+    { q: 'teleconseiller+service+client' },
+    { q: 'receptionniste+hotel' },
+    { q: 'serveur+restauration' },
+    { q: 'livreur+livraison' },
+    { q: 'aide+domicile+auxiliaire' },
+    { q: 'enqueteur+terrain+sondage' },
   ];
   try {
     const all = await Promise.all(queries.map(({ q }) => {
@@ -816,10 +826,12 @@ async function fetchIndeedRSSFR() {
 async function fetchJobtomeRSSFR() {
   const loc = getUserLocation().toLowerCase().replace(/ /g,'-').replace(/[^a-z0-9-]/g,'');
   const queries = [
-    'baby-sitter', 'animateur-periscolaire', 'assistant-education',
-    'teleconseiller-debutant', 'hotesse-accueil', 'vendeur-debutant',
-    'receptionniste-hotel-debutant', 'femme-de-chambre', 'serveur-restauration',
-    'job-etudiant', 'emploi-sans-diplome',
+    'baby-sitter', 'animateur-enfant', 'soutien-scolaire',
+    'vendeur-magasin', 'employe-polyvalent', 'caissier',
+    'preparateur-commandes', 'manutentionnaire',
+    'teleconseiller', 'receptionniste-hotel',
+    'serveur-restauration', 'livreur-livraison',
+    'aide-domicile', 'enqueteur-terrain', 'agent-securite',
   ];
   try {
     const all = await Promise.all(queries.map(q => {
@@ -837,8 +849,12 @@ async function fetchJobtomeRSSFR() {
 async function fetchTalentRSSFR() {
   const loc = getUserLocation();
   const queries = [
-    'baby sitter débutant', 'animateur périscolaire', 'téléconseiller débutant',
-    'vendeur débutant', 'réceptionniste hôtel débutant', 'job étudiant sans expérience',
+    'baby sitter garde enfant', 'animateur enfant',
+    'soutien scolaire', 'vendeur magasin',
+    'employe polyvalent', 'preparateur commandes',
+    'teleconseiller', 'receptionniste hotel',
+    'serveur restauration', 'livreur livraison',
+    'aide domicile', 'enqueteur terrain',
   ];
   try {
     const all = await Promise.all(queries.map(q => {

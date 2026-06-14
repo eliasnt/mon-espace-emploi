@@ -1,9 +1,9 @@
 {
-  "last_update": "2026-06-14T15:32:13",
+  "last_update": "2026-06-14T15:58:33",
   "france": {
-    "total": 27,
+    "total": 1024,
     "by_source": {
-      "adzuna": 27,
+      "adzuna": 1024,
       "jooble": 0,
       "indeed": 0,
       "jobtome": 0
