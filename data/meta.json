@@ -1,1 +1,27 @@
-{"last_update": null, "france": {"total": 0}, "aupair": {"total": 0}}
+{
+  "last_update": "2026-06-14T13:20:17",
+  "france": {
+    "total": 221,
+    "by_source": {
+      "adzuna": 221,
+      "jooble": 0,
+      "indeed": 0,
+      "jobtome": 0
+    }
+  },
+  "aupair": {
+    "total": 107,
+    "by_city": {
+      "barcelona": 57,
+      "palma": 30,
+      "madrid": 20
+    },
+    "by_source": {
+      "adzuna_es": 106,
+      "jooble": 1,
+      "indeed": 0,
+      "infojobs": 0,
+      "jobtome": 0
+    }
+  }
+}
