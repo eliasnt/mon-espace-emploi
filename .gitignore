@@ -1,0 +1,9 @@
+# Clés API — ne jamais commiter
+scraper/config.py
+scraper/__pycache__/
+*.pyc
+.env
+
+# OS
+.DS_Store
+Thumbs.db

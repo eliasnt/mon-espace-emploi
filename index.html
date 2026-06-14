@@ -269,7 +269,8 @@ nav{background:white;border-bottom:1px solid var(--border);padding:0 1.5rem;disp
 
   <div class="geo-banner" id="geoBanner">
     <span class="geo-label">📍 Zone de recherche :</span>
-    <span class="geo-active-badge" id="geoBadgeText">France 🗺️</span>
+    <span class="geo-active-badge" id="geoBadgeText">Île-de-France 🗺️</span>
+    <span id="lastUpdateBadge" style="font-size:.7rem;color:var(--lavande-deep);margin-left:auto;"></span>
   </div>
 
   <div class="stats-strip">
@@ -847,33 +848,58 @@ async function fetchTalentRSSFR() {
 }
 
 // ── LOAD ALL FRANCE JOBS ──────────────────────────────
+// Priorité 1 : JSON pré-fetchés par le scraper Python local
+// Priorité 2 : APIs live (fallback si JSON vide ou recherche manuelle)
 async function loadJobsFR(customQuery) {
   document.getElementById('loader-fr').style.display = 'block';
   document.getElementById('cardsGrid').innerHTML = '';
+
+  let fromCache = false;
+
   try {
-    const [az, jb, ind, jtfr, tal] = await Promise.all([
-      fetchAdzunaFR(customQuery),
-      fetchJoobleFR(customQuery),
-      customQuery ? Promise.resolve([]) : fetchIndeedRSSFR(),
-      customQuery ? Promise.resolve([]) : fetchJobtomeRSSFR(),
-      customQuery ? Promise.resolve([]) : fetchTalentRSSFR(),
-    ]);
+    if (!customQuery) {
+      // Essaie de charger le JSON local (généré par scraper/scrape.py)
+      const r = await withTimeout(fetch('./data/offres.json?t=' + Date.now()), 6000);
+      if (r.ok) {
+        const cached = await r.json();
+        if (Array.isArray(cached) && cached.length > 0) {
+          const seen = new Set();
+          allJobs = cached.filter(j => { if (!j || seen.has(j.id)) return false; seen.add(j.id); return true; });
+          fromCache = true;
+          renderSourceStatus({ '🐍 Scraper Python (cache)': allJobs.length }, 'frSourceStatus');
+        }
+      }
+    }
+  } catch {}
 
-    const stats = {};
-    if (getCfg('emp_adzuna_id')) stats['Adzuna FR'] = az.length;
-    if (getCfg('emp_jooble'))    stats['Jooble']    = jb.length;
-    stats['Indeed RSS']   = ind.length;
-    stats['Jobtome RSS']  = jtfr.length;
-    stats['Talent.com']   = tal.length;
-    renderSourceStatus(stats, 'frSourceStatus');
+  if (!fromCache) {
+    // Fallback : APIs live depuis le navigateur
+    try {
+      const [az, jb, ind, jtfr, tal] = await Promise.all([
+        fetchAdzunaFR(customQuery),
+        fetchJoobleFR(customQuery),
+        customQuery ? Promise.resolve([]) : fetchIndeedRSSFR(),
+        customQuery ? Promise.resolve([]) : fetchJobtomeRSSFR(),
+        customQuery ? Promise.resolve([]) : fetchTalentRSSFR(),
+      ]);
 
-    const seen = new Set();
-    allJobs = [...az, ...jb, ...ind, ...jtfr, ...tal].filter(j => {
-      if (!j || seen.has(j.id)) return false;
-      seen.add(j.id);
-      return true;
-    });
-  } catch { allJobs = []; }
+      const stats = {};
+      if (getCfg('emp_adzuna_id')) stats['Adzuna FR'] = az.length;
+      if (getCfg('emp_jooble'))    stats['Jooble']    = jb.length;
+      stats['Indeed RSS']  = ind.length;
+      stats['Jobtome RSS'] = jtfr.length;
+      stats['Talent.com']  = tal.length;
+      renderSourceStatus(stats, 'frSourceStatus');
+
+      const seen = new Set();
+      allJobs = [...az, ...jb, ...ind, ...jtfr, ...tal].filter(j => {
+        if (!j || seen.has(j.id)) return false;
+        seen.add(j.id);
+        return true;
+      });
+    } catch { allJobs = []; }
+  }
+
   document.getElementById('loader-fr').style.display = 'none';
   renderJobsFR();
 }
@@ -1077,30 +1103,47 @@ async function loadDataSpain() {
   renderSpainList();
   loaderEs.style.display = 'block';
 
+  let fromCache = false;
+
   try {
-    const [az, jb, ind, infojs, jtme] = await Promise.all([
-      fetchAdzunaES(),
-      fetchJoobleES(),
-      fetchIndeedRSSES(),
-      fetchInfoJobsRSS(),
-      fetchJobtomeES(),
-    ]);
+    const r = await withTimeout(fetch('./data/aupair.json?t=' + Date.now()), 6000);
+    if (r.ok) {
+      const cached = await r.json();
+      if (Array.isArray(cached) && cached.length > 0) {
+        const seen = new Set();
+        auPairJobs = cached.filter(j => { if (!j || seen.has(j.id)) return false; seen.add(j.id); return true; });
+        fromCache = true;
+        renderSourceStatus({ '🐍 Scraper Python (cache)': auPairJobs.length }, 'esSourceStatus');
+      }
+    }
+  } catch {}
 
-    const stats = {};
-    if (getCfg('emp_adzuna_id')) stats['Adzuna ES'] = az.length;
-    if (getCfg('emp_jooble'))    stats['Jooble ES'] = jb.length;
-    stats['Indeed ES RSS']   = ind.length;
-    stats['InfoJobs RSS']    = infojs.length;
-    stats['Jobtome ES RSS']  = jtme.length;
-    renderSourceStatus(stats, 'esSourceStatus');
+  if (!fromCache) {
+    try {
+      const [az, jb, ind, infojs, jtme] = await Promise.all([
+        fetchAdzunaES(),
+        fetchJoobleES(),
+        fetchIndeedRSSES(),
+        fetchInfoJobsRSS(),
+        fetchJobtomeES(),
+      ]);
 
-    const seen = new Set();
-    auPairJobs = [...az, ...jb, ...ind, ...infojs, ...jtme].filter(j => {
-      if (!j || seen.has(j.id)) return false;
-      seen.add(j.id);
-      return true;
-    });
-  } catch { auPairJobs = []; }
+      const stats = {};
+      if (getCfg('emp_adzuna_id')) stats['Adzuna ES'] = az.length;
+      if (getCfg('emp_jooble'))    stats['Jooble ES'] = jb.length;
+      stats['Indeed ES RSS']  = ind.length;
+      stats['InfoJobs RSS']   = infojs.length;
+      stats['Jobtome ES RSS'] = jtme.length;
+      renderSourceStatus(stats, 'esSourceStatus');
+
+      const seen = new Set();
+      auPairJobs = [...az, ...jb, ...ind, ...infojs, ...jtme].filter(j => {
+        if (!j || seen.has(j.id)) return false;
+        seen.add(j.id);
+        return true;
+      });
+    } catch { auPairJobs = []; }
+  }
 
   loaderEs.style.display = 'none';
   renderSpainList();
@@ -1514,6 +1557,52 @@ function setMotivation() {
   if (sm) sm.innerHTML = `💡 <strong>Rappel :</strong> ${m}`;
 }
 
+async function loadMeta() {
+  try {
+    const r = await withTimeout(fetch('./data/meta.json?t=' + Date.now()), 4000);
+    if (!r.ok) return;
+    const meta = await r.json();
+    const badge = document.getElementById('lastUpdateBadge');
+    if (badge && meta.last_update) {
+      const d = new Date(meta.last_update);
+      const label = d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' })
+                  + ' à ' + d.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+      const fr  = meta.france?.total  || 0;
+      const es  = meta.aupair?.total  || 0;
+      badge.innerHTML = `🐍 Mis à jour le ${label} — ${fr} offres IDF · ${es} Au Pair
+        <button onclick="forceRefreshLive()" style="margin-left:.5rem;font-size:.65rem;border:1px solid var(--lavande);background:var(--lavande-light);color:var(--lavande-deep);border-radius:50px;padding:1px 8px;cursor:pointer;font-family:'DM Sans',sans-serif;">↻ Rafraîchir live</button>`;
+    }
+  } catch {}
+}
+
+async function forceRefreshLive() {
+  // Ignore le cache JSON et requête les APIs directement
+  document.getElementById('loader-fr').style.display = 'block';
+  document.getElementById('cardsGrid').innerHTML = '';
+  try {
+    const [az, jb, ind, jtfr, tal] = await Promise.all([
+      fetchAdzunaFR(null),
+      fetchJoobleFR(null),
+      fetchIndeedRSSFR(),
+      fetchJobtomeRSSFR(),
+      fetchTalentRSSFR(),
+    ]);
+    const stats = {};
+    if (getCfg('emp_adzuna_id')) stats['Adzuna FR'] = az.length;
+    if (getCfg('emp_jooble'))    stats['Jooble']    = jb.length;
+    stats['Indeed RSS'] = ind.length;
+    stats['Jobtome RSS'] = jtfr.length;
+    stats['Talent.com'] = tal.length;
+    renderSourceStatus(stats, 'frSourceStatus');
+    const seen = new Set();
+    allJobs = [...az, ...jb, ...ind, ...jtfr, ...tal].filter(j => {
+      if (!j || seen.has(j.id)) return false; seen.add(j.id); return true;
+    });
+  } catch { allJobs = []; }
+  document.getElementById('loader-fr').style.display = 'none';
+  renderJobsFR();
+}
+
 function initApp() {
   initPetals();
   setMotivation();
@@ -1521,12 +1610,12 @@ function initApp() {
   updateFavCount();
   renderSuivi();
 
-  const loc = getCfg('emp_location', 'Paris');
-  document.getElementById('geoBadgeText').innerText = loc + ' 🗺️';
+  document.getElementById('geoBadgeText').innerText = 'Île-de-France 🗺️';
   document.getElementById('searchInput').addEventListener('keydown', e => {
     if (e.key === 'Enter') doSearch();
   });
 
+  loadMeta();
   loadJobsFR(null);
 }
 
